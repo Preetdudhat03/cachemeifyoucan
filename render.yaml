@@ -1,11 +1,22 @@
 services:
+  # Python Backend Service
   - type: web
-    name: codeforge-options-analytics
+    name: options-analytics-api
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn backend.main:app --host 0.0.0.0 --port 8000
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.10.0
+
+  # Next.js Frontend Service
+  - type: web
+    name: options-analytics-web
     env: node
-    buildCommand: npm install && npm run build && pip install -r requirements.txt
+    rootDir: frontend
+    buildCommand: npm install && npm run build
     startCommand: npm run start
     envVars:
       - key: NEXT_PUBLIC_API_URL
-        value: https://codeforge-options-analytics.onrender.com/api
-      - key: PYTHON_VERSION
-        value: 3.10.0
+        # This will be updated with the actual backend URL after the first deployment
+        value: https://options-analytics-api.onrender.com/api

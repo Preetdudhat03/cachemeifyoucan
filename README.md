@@ -45,3 +45,7 @@ python scripts/run_dashboard.py
 ```
 
 Once running, navigate your web browser to **`http://localhost:3000`** to view your real-time Options Market Analytics Platform!
+
+## Deployment
+
+For instructions on how to host this project on Render.com, please refer to the [Render Deployment Guide](./deployment_guide.md).
