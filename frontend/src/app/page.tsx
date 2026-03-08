@@ -52,7 +52,7 @@ export default function Dashboard() {
   const handleSync = async () => {
     setLoading(true);
     try {
-      const BASE_URL = "http://127.0.0.1:8000/api";
+      const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api";
       await fetch(`${BASE_URL}/reload`, { method: "POST" });
       await fetchData();
     } catch (error) {
@@ -104,7 +104,7 @@ export default function Dashboard() {
                 <span style={{ fontFamily: "var(--mono)", fontSize: "0.7rem", letterSpacing: "0.15em", color: "var(--orange)", textTransform: "uppercase" }}>Live AI Insight</span>
               </div>
               <p style={{ color: "var(--text)", fontSize: "1.05rem", lineHeight: 1.75 }}>
-                Large liquidity concentration at <strong style={{ color: "var(--cyan)" }}>{overview.resistance?.toLocaleString()}</strong> strike suggests an algorithmic resistance zone. Sentiment indicators remain highly <strong style={{ color: "var(--cyan)", textTransform: "uppercase" }}>{overview.sentiment}</strong> with PCR resting at <strong style={{ color: "var(--cyan)" }}>{overview.pcr?.toFixed(2)}</strong>. 
+                Large liquidity concentration at <strong style={{ color: "var(--cyan)" }}>{overview.resistance?.toLocaleString()}</strong> strike suggests an algorithmic resistance zone. Sentiment indicators remain highly <strong style={{ color: "var(--cyan)", textTransform: "uppercase" }}>{overview.sentiment}</strong> with PCR resting at <strong style={{ color: "var(--cyan)" }}>{overview.pcr?.toFixed(2)}</strong>.
                 Downside support established at <strong style={{ color: "var(--cyan)" }}>{overview.support?.toLocaleString()}</strong>.
               </p>
             </div>

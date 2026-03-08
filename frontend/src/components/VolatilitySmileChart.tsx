@@ -2,13 +2,14 @@
 import React, { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 
-const Plot = dynamic(() => import('react-plotly.js'), { ssr: false });
+const Plot = dynamic(() => import('react-plotly.js'), { ssr: false }) as any;
 
 export default function VolatilitySmileChart() {
   const [data, setData] = useState<any>(null);
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/api/volatility-smile')
+    const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api";
+    fetch(`${API_BASE}/volatility-smile`)
       .then(res => res.json())
       .then(d => setData(d))
       .catch(e => console.error("Error fetching Volatility Smile", e));
@@ -29,7 +30,7 @@ export default function VolatilitySmileChart() {
           AI Detection: {data.pattern}
         </span>
       </div>
-      
+
       <div className="w-full flex-1">
         <Plot
           data={[
@@ -55,8 +56,8 @@ export default function VolatilitySmileChart() {
             margin: { l: 50, r: 20, b: 40, t: 0 },
             paper_bgcolor: 'transparent',
             plot_bgcolor: 'transparent',
-            xaxis: { title: 'Strike Price', gridcolor: 'rgba(255,255,255,0.05)', tickfont: {color: '#818cf8'}, titlefont: {color: '#818cf8'} },
-            yaxis: { title: 'Implied Volatility', gridcolor: 'rgba(255,255,255,0.05)', tickfont: {color: '#818cf8'}, titlefont: {color: '#818cf8'} },
+            xaxis: { title: 'Strike Price', gridcolor: 'rgba(255,255,255,0.05)', tickfont: { color: '#818cf8' }, titlefont: { color: '#818cf8' } },
+            yaxis: { title: 'Implied Volatility', gridcolor: 'rgba(255,255,255,0.05)', tickfont: { color: '#818cf8' }, titlefont: { color: '#818cf8' } },
             legend: { font: { color: '#e2e8f0' }, orientation: "h", y: -0.2 }
           }}
           useResizeHandler={true}

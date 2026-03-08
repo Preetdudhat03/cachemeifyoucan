@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 
-const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
+const Plot = dynamic(() => import("react-plotly.js"), { ssr: false }) as any;
 
 const THEME = {
   paper_bgcolor: "rgba(30, 41, 59, 0.5)",

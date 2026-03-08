@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 
-const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
+const Plot = dynamic(() => import("react-plotly.js"), { ssr: false }) as any;
 
 interface StrikeHeatmapProps {
   strikes: number[];
@@ -31,33 +31,35 @@ export function StrikeHeatmap({
 
   return (
     <div className="w-full h-[400px]">
-      <Plot
-        data={[
-          {
-            z,
-            x: strikes,
-            y: yLabels,
-            type: "heatmap",
-            colorscale: [
-              [0, "#0f172a"],
-              [0.25, "#1e3a5f"],
-              [0.5, "#06b6d4"],
-              [0.75, "#22d3ee"],
-              [1, "#67e8f9"],
-            ],
-            showscale: true,
-            colorbar: { title: "Intensity" },
-          },
-        ]}
-        layout={{
-          ...PLOTLY_THEME,
-          title: { text: title, font: { size: 16 } },
-          xaxis: { title: "Strike", side: "bottom" },
-          yaxis: { title: "" },
-        }}
-        config={{ responsive: true, displayModeBar: true }}
-        style={{ width: "100%", height: "100%" }}
-      />
+      {(Plot as any) && (
+        <Plot
+          data={[
+            {
+              z,
+              x: strikes,
+              y: yLabels,
+              type: "heatmap",
+              colorscale: [
+                [0, "#0f172a"],
+                [0.25, "#1e3a5f"],
+                [0.5, "#06b6d4"],
+                [0.75, "#22d3ee"],
+                [1, "#67e8f9"],
+              ],
+              showscale: true,
+              colorbar: { title: { text: "Intensity" } },
+            },
+          ]}
+          layout={{
+            ...PLOTLY_THEME,
+            title: { text: title, font: { size: 16 } },
+            xaxis: { title: { text: "Strike" }, side: "bottom" },
+            yaxis: { title: { text: "" } },
+          }}
+          config={{ responsive: true, displayModeBar: true }}
+          style={{ width: "100%", height: "100%" }}
+        />
+      )}
     </div>
   );
 }

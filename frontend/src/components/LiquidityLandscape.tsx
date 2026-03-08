@@ -2,14 +2,15 @@
 import React, { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 
-const Plot = dynamic(() => import('react-plotly.js'), { ssr: false });
+const Plot = dynamic(() => import('react-plotly.js'), { ssr: false }) as any;
 
 export default function LiquidityLandscape() {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/api/liquidity-landscape')
+    const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api";
+    fetch(`${API_BASE}/liquidity-landscape`)
       .then(res => res.json())
       .then(d => {
         setData(d);
@@ -33,7 +34,7 @@ export default function LiquidityLandscape() {
       type: 'surface',
       colorscale: 'Inferno',
       name: 'Open Interest',
-      hovertemplate: 
+      hovertemplate:
         "<b>Time:</b> %{y}<br>" +
         "<b>Strike:</b> %{x}<br>" +
         "<b>Total Liquidity (OI):</b> %{z:,.0f}<br>" +

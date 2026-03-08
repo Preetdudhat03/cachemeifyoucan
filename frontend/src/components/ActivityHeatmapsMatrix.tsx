@@ -2,13 +2,14 @@
 import React, { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 
-const Plot = dynamic(() => import('react-plotly.js'), { ssr: false });
+const Plot = dynamic(() => import('react-plotly.js'), { ssr: false }) as any;
 
 export default function ActivityHeatmapsMatrix() {
   const [data, setData] = useState<any>(null);
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/api/heatmaps')
+    const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api";
+    fetch(`${API_BASE}/heatmaps`)
       .then(res => res.json())
       .then(d => setData(d))
       .catch(e => console.error("Error fetching Heatmaps", e));
@@ -30,7 +31,7 @@ export default function ActivityHeatmapsMatrix() {
       type: 'heatmap',
       colorscale: 'YlOrRd',
       hoverongaps: false,
-      hovertemplate: 
+      hovertemplate:
         "<b>Strike:</b> %{x}<br>" +
         "<b>Expiry:</b> %{y}<br>" +
         "<b>Call Open Interest:</b> %{z:,.0f}<br>" +
@@ -40,20 +41,30 @@ export default function ActivityHeatmapsMatrix() {
 
   return (
     <div className="w-full h-[380px]">
-      <Plot
-        data={plotData as any}
-        layout={{
-          autosize: true,
-          margin: { l: 80, r: 20, b: 40, t: 20 },
-          paper_bgcolor: 'transparent',
-          plot_bgcolor: 'transparent',
-          xaxis: { title: 'Strike Price', tickfont: {color: '#818cf8'}, titlefont: {color: '#818cf8'}, gridcolor: 'rgba(255,255,255,0.05)' },
-          yaxis: { title: 'Expiry Date', tickfont: {color: '#818cf8'}, titlefont: {color: '#818cf8'}, gridcolor: 'rgba(255,255,255,0.05)' }
-        }}
-        useResizeHandler={true}
-        style={{ width: '100%', height: '100%' }}
-        config={{ responsive: true, displayModeBar: false }}
-      />
+      {(Plot as any) && (
+        <Plot
+          data={plotData as any}
+          layout={{
+            autosize: true,
+            margin: { l: 80, r: 20, b: 40, t: 20 },
+            paper_bgcolor: 'transparent',
+            plot_bgcolor: 'transparent',
+            xaxis: {
+              title: { text: 'Strike Price', font: { color: '#818cf8' } },
+              tickfont: { color: '#818cf8' },
+              gridcolor: 'rgba(255,255,255,0.05)'
+            },
+            yaxis: {
+              title: { text: 'Expiry Date', font: { color: '#818cf8' } },
+              tickfont: { color: '#818cf8' },
+              gridcolor: 'rgba(255,255,255,0.05)'
+            }
+          }}
+          useResizeHandler={true}
+          style={{ width: '100%', height: '100%' }}
+          config={{ responsive: true, displayModeBar: false }}
+        />
+      )}
     </div>
   );
 }
