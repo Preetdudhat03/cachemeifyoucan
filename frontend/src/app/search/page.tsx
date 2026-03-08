@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import dynamic from "next/dynamic";
+import { getApiBaseUrl, safeFetch } from "@/lib/apiConfig";
 import { SearchBar } from "@/components/search/SearchBar";
 import { QuerySuggestions } from "@/components/search/QuerySuggestions";
 import { BackendChartDisplay } from "@/components/search/BackendChartDisplay";
@@ -26,15 +27,14 @@ export default function SearchPage() {
     setResult(null);
 
     try {
-      const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api";
-      const response = await fetch(`${BASE_URL}/search`, {
+      const BASE_URL = getApiBaseUrl();
+      const data = await safeFetch(`${BASE_URL}/search`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ query }),
       });
-      const data = await response.json();
       setResult(data);
-    } catch (err) {
+    } catch (err: any) {
       setError(err instanceof Error ? err.message : "Search failed");
     } finally {
       setLoading(false);

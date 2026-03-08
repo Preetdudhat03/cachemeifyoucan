@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
+import { getApiBaseUrl, safeFetch } from "@/lib/apiConfig";
 
 import MarketOverview from "@/components/MarketOverview";
 import InsightsPanel from "@/components/InsightsPanel";
@@ -29,21 +30,21 @@ export default function Dashboard() {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api";
+      const BASE_URL = getApiBaseUrl();
       const [ovRes, heatRes, insRes, anomRes, regRes] = await Promise.all([
-        fetch(`${BASE_URL}/overview`),
-        fetch(`${BASE_URL}/heatmaps`),
-        fetch(`${BASE_URL}/insights`),
-        fetch(`${BASE_URL}/anomalies`),
-        fetch(`${BASE_URL}/market-regime`),
+        safeFetch(`${BASE_URL}/overview`),
+        safeFetch(`${BASE_URL}/heatmaps`),
+        safeFetch(`${BASE_URL}/insights`),
+        safeFetch(`${BASE_URL}/anomalies`),
+        safeFetch(`${BASE_URL}/market-regime`),
       ]);
-      setOverview(await ovRes.json());
-      const insData = await insRes.json();
-      setInsights(insData.insights || []);
-      setAnomalies(await anomRes.json());
-      setRegime(await regRes.json());
-    } catch (error) {
-      console.error("Error fetching analytics data:", error);
+      setOverview(ovRes);
+      setInsights(insRes.insights || []);
+      setAnomalies(anomRes);
+      setRegime(regRes);
+    } catch (error: any) {
+      console.error("Dashboard fetch error:", error);
+      setError(error.message);
     } finally {
       setLoading(false);
     }
@@ -52,7 +53,7 @@ export default function Dashboard() {
   const handleSync = async () => {
     setLoading(true);
     try {
-      const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api";
+      const BASE_URL = getApiBaseUrl();
       await fetch(`${BASE_URL}/reload`, { method: "POST" });
       await fetchData();
     } catch (error) {

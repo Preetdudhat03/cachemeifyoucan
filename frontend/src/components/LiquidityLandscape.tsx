@@ -1,6 +1,7 @@
 "use client"
 import React, { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
+import { getApiBaseUrl, safeFetch } from '@/lib/apiConfig';
 
 const Plot = dynamic(() => import('react-plotly.js'), { ssr: false }) as any;
 
@@ -9,9 +10,8 @@ export default function LiquidityLandscape() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api";
-    fetch(`${API_BASE}/liquidity-landscape`)
-      .then(res => res.json())
+    const API_BASE = getApiBaseUrl();
+    safeFetch(`${API_BASE}/liquidity-landscape`)
       .then(d => {
         setData(d);
         setLoading(false);
