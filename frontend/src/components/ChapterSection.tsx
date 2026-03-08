@@ -22,11 +22,11 @@ export default function ChapterSection({
   orange = false,
 }: ChapterSectionProps) {
   return (
-    <section 
-      id={id} 
-      style={{ 
-        padding: "5rem 2rem", 
-        background: bg2 ? "var(--bg-2)" : "transparent" 
+    <section
+      id={id}
+      style={{
+        padding: "5rem 2rem",
+        background: bg2 ? "var(--bg-2)" : "transparent"
       }}
     >
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>

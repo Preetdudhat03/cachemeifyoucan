@@ -60,7 +60,7 @@ export default function SearchPage() {
           </div>
         </ChapterSection>
 
-        <section style={{ maxWidth: 1200, margin: "0 auto", padding: "0 2rem 5rem" }}>
+        <section style={{ maxWidth: 1200, margin: "0 auto", padding: "0 1.5rem 5rem" }}>
           {error && (
             <div className="glass-card" style={{ padding: "1.5rem", borderLeft: "4px solid var(--orange)", color: "var(--orange)", marginBottom: "2rem" }}>
               <h3 style={{ fontSize: "0.9rem", fontWeight: 700, marginBottom: "0.5rem" }}>SEARCH ERROR</h3>

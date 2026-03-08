@@ -62,9 +62,10 @@ export function SearchBar({
             border: "none",
             outline: "none",
             color: "var(--text)",
-            padding: "1rem 1.25rem",
-            fontSize: "1.1rem",
-            fontFamily: "var(--font)"
+            padding: "0.75rem 1rem",
+            fontSize: "clamp(0.9rem, 1.1vw, 1.1rem)",
+            fontFamily: "var(--font)",
+            minWidth: 0
           }}
         />
         <button
@@ -75,10 +76,14 @@ export function SearchBar({
             borderRadius: "999px",
             background: "var(--cyan)",
             color: "#000",
-            boxShadow: "0 0 15px var(--cyan-glow)"
+            boxShadow: "0 0 15px var(--cyan-glow)",
+            whiteSpace: "nowrap",
+            padding: "0.6rem 1rem",
+            fontSize: "clamp(0.7rem, 0.85vw, 0.85rem)",
+            marginRight: "0.25rem"
           }}
         >
-          {isLoading ? "ENGINE RUNNING..." : "ANALYZE"}
+          {isLoading ? "RUNNING..." : "ANALYZE"}
         </button>
       </div>
     </form>

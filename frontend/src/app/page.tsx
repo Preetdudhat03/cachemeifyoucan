@@ -44,7 +44,7 @@ export default function Dashboard() {
       setRegime(regRes);
     } catch (error: any) {
       console.error("Dashboard fetch error:", error);
-      setError(error.message);
+      // setError(error.message);
     } finally {
       setLoading(false);
     }
@@ -111,7 +111,7 @@ export default function Dashboard() {
             </div>
           )}
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: "1rem", marginBottom: "2.5rem" }}>
+          <div className="responsive-grid mobile-grid-cols-1 tablet-grid-cols-2 grid-cols-5" style={{ marginBottom: "2.5rem" }}>
             <div className="stat-card">
               <div className="stat-val">{overview?.spot_price?.toLocaleString() || "—"}</div>
               <div className="stat-label">Spot Price</div>
@@ -159,13 +159,13 @@ export default function Dashboard() {
           description="Interactive exploration of market sentiment, volatility structure, and liquidity positioning through polynomial curve-fitting and aggregated macro gauges."
           orange
         >
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 2fr", gap: "1.5rem", marginBottom: "2rem" }}>
-            <div className="glass-card" style={{ padding: "2rem" }}>
+          <div className="responsive-grid mobile-grid-cols-1 grid-cols-3" style={{ marginBottom: "2rem" }}>
+            <div className="glass-card" style={{ padding: "2rem", gridColumn: "span 1" }}>
               <h3 style={{ fontSize: "1rem", fontWeight: 600, marginBottom: "0.5rem" }}>Market Sentiment</h3>
               <p style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginBottom: "1.5rem", fontFamily: "var(--mono)", letterSpacing: "0.08em", textTransform: "uppercase" }}>Aggregated macro positioning gauge</p>
               <SentimentGauge />
             </div>
-            <div className="glass-card" style={{ padding: "2rem" }}>
+            <div className="glass-card" style={{ padding: "2rem", gridColumn: "span 2" }}>
               <h3 style={{ fontSize: "1rem", fontWeight: 600, marginBottom: "0.5rem" }}>Volatility Smile & Skew</h3>
               <p style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginBottom: "1rem", fontFamily: "var(--mono)", letterSpacing: "0.08em", textTransform: "uppercase" }}>Polynomial options structure fitting</p>
               <div style={{ minHeight: 350 }}><VolatilitySmileChart /></div>
@@ -180,7 +180,7 @@ export default function Dashboard() {
           description="WebGL-rendered topological maps of options market structure. Explore institutional positioning and Black-Scholes volatility modeling in three dimensions."
           bg2
         >
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.5rem", marginBottom: "2rem" }}>
+          <div className="responsive-grid mobile-grid-cols-1 grid-cols-2" style={{ marginBottom: "2rem" }}>
             <div className="glass-card" style={{ padding: "2rem", display: "flex", flexDirection: "column", alignItems: "center" }}>
               <div style={{ width: 40, height: 3, background: "var(--cyan)", borderRadius: 2, opacity: 0.5, marginBottom: "1rem" }} />
               <h3 style={{ fontSize: "1.25rem", fontWeight: 700, marginBottom: "0.5rem", textAlign: "center" }}>Liquidity Landscape</h3>
@@ -195,9 +195,9 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "1.5rem" }}>
-            <div className="glass-card" style={{ padding: "2rem" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem" }}>
+          <div className="responsive-grid mobile-grid-cols-1 grid-cols-3" style={{ gap: "1.5rem" }}>
+            <div className="glass-card" style={{ padding: "2rem", gridColumn: "span 2" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem", flexWrap: "wrap", gap: "1rem" }}>
                 <div>
                   <h3 style={{ fontSize: "1rem", fontWeight: 600, marginBottom: "0.25rem" }}>Volume Heatmaps</h3>
                   <p style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontFamily: "var(--mono)", letterSpacing: "0.08em", textTransform: "uppercase" }}>Biphasic rendering of Calls vs Puts</p>
@@ -206,12 +206,14 @@ export default function Dashboard() {
               </div>
               <div style={{ minHeight: 400, background: "rgba(0,0,0,0.3)", borderRadius: "var(--radius)", overflow: "hidden", padding: 8 }}><ActivityHeatmapsMatrix /></div>
             </div>
-            <InsightsPanel insights={insights} loading={loading} />
+            <div style={{ gridColumn: "span 1" }}>
+              <InsightsPanel insights={insights} loading={loading} />
+            </div>
           </div>
         </ChapterSection>
 
-        <section id="radar" style={{ padding: "5rem 2rem", maxWidth: 1200, margin: "0 auto" }}>
-          <div className="glass-card" style={{ padding: "3rem" }}>
+        <section id="radar" style={{ padding: "clamp(2rem, 8vw, 5rem) 1.5rem", maxWidth: 1200, margin: "0 auto" }}>
+          <div className="glass-card" style={{ padding: "clamp(1.5rem, 5vw, 3rem)" }}>
             <div className="chapter-label-wrap">
               <span className="chapter-square chapter-square-orange" />
               <span className="chapter-num chapter-num-orange">UNUSUAL ACTIVITY RADAR</span>
