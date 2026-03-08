@@ -24,7 +24,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "concurrently": "^82.2.2",
+    "concurrently": "^8.2.2",
     "cross-env": "^7.0.3",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
