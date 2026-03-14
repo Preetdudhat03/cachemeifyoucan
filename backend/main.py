@@ -66,6 +66,22 @@ async def startup_event():
     except Exception as e:
         print(f"Startup error: {e}")
 
+@app.get("/")
+async def root():
+    """Root endpoint to verify the API is running and prevent 404s in the browser."""
+    return {"status": "active", "message": "Options Analytics API is running. Access /docs for Swagger UI."}
+
+@app.get("/api/health")
+async def health_check():
+    """Health check endpoint for monitoring."""
+    return {"status": "healthy"}
+
+@app.get("/api/cron/reload")
+async def cron_reload(contamination: float = 0.05):
+    """GET endpoint to easily trigger a data reload from a simple cron service."""
+    load_data(contamination=contamination)
+    return {"status": "success", "message": "Data reloaded successfully via cron"}
+
 # ---- CORE ENDPOINTS ----
 
 @app.get("/api/overview")
